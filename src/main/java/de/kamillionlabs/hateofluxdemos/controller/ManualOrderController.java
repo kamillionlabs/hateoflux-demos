@@ -14,8 +14,6 @@ import de.kamillionlabs.hateoflux.model.hal.HalResourceWrapper;
 import de.kamillionlabs.hateoflux.model.link.IanaRelation;
 import de.kamillionlabs.hateoflux.model.link.Link;
 import de.kamillionlabs.hateoflux.utility.SortCriteria;
-import de.kamillionlabs.hateoflux.utility.pair.Pair;
-import de.kamillionlabs.hateoflux.utility.pair.PairFlux;
 import de.kamillionlabs.hateofluxdemos.assembler.OrderAssembler;
 import de.kamillionlabs.hateofluxdemos.dto.OrderDTO;
 import de.kamillionlabs.hateofluxdemos.dto.ShipmentDTO;
@@ -40,7 +38,7 @@ import static de.kamillionlabs.hateoflux.utility.SortDirection.DESCENDING;
  * @author Younes El Ouarti
  */
 @RestController
-@RequestMapping
+@RequestMapping("/manual")
 @AllArgsConstructor
 public class ManualOrderController {
 
@@ -56,7 +54,7 @@ public class ManualOrderController {
     /**
      * Cookbook example: Creating a HalResourceWrapper without an Embedded Resource
      */
-    @GetMapping("/{orderId}")
+    @GetMapping("/order-no-embedded/{orderId}")
     public Mono<HalResourceWrapper<OrderDTO, Void>> getOrder(@PathVariable int orderId) {    // 1
 
         Mono<OrderDTO> orderMono = orderService.getOrder(orderId);                           // 2
@@ -96,7 +94,7 @@ public class ManualOrderController {
     /**
      * Cookbook example: Creating a HalListWrapper with Pagination
      */
-    @GetMapping("/orders-with-pagination-manual")
+    @GetMapping("/orders-with-pagination")
     public Mono<HalListWrapper<OrderDTO, Void>> getOrdersManualBuilt(@RequestParam Long userId,                       //  1
                                                                      Pageable pageable,                               //  2
                                                                      ServerWebExchange exchange) {                    //  3
@@ -127,26 +125,26 @@ public class ManualOrderController {
                 );
     }
 
-    /**
-     * Cookbook example: Using an Assembler to Create a HalListWrapper For Resources With an Embedded Resource
-     */
-    @GetMapping("/orders-using-assembler")
-    public Mono<HalListWrapper<OrderDTO, ShipmentDTO>> getOrdersUsingAssembler(@RequestParam(required = false) Long userId,     // 1
-                                                                               Pageable pageable,                               // 2
-                                                                               ServerWebExchange exchange) {                    // 3
-
-        PairFlux<OrderDTO, ShipmentDTO> ordersWithShipment = PairFlux.of(orderService.getOrders(userId, pageable)               // 4
-                .flatMap(order ->
-                        shipmentService.getShipmentByOrderId(order.getId())
-                                .map(shipment -> Pair.of(order, shipment))));
-
-        Mono<Long> totalElements = orderService.countAllOrders(userId);                                                         // 5
-
-        int pageSize = pageable.getPageSize();                                                                                  // 6
-        long offset = pageable.getOffset();
-        List<SortCriteria> sortCriteria = pageable.getSort().get()
-                .map(o -> SortCriteria.by(o.getProperty(), o.getDirection().isAscending() ? ASCENDING : DESCENDING))
-                .toList();
-        return orderAssembler.wrapInListWrapper(ordersWithShipment, totalElements, pageSize, offset, sortCriteria, exchange);   // 7
-    }
+//    /**
+//     * Cookbook example: Using an Assembler to Create a HalListWrapper For Resources With an Embedded Resource
+//     */
+//    @GetMapping("/orders-using-assembler")
+//    public Mono<HalListWrapper<OrderDTO, ShipmentDTO>> getOrdersUsingAssembler(@RequestParam(required = false) Long userId,     // 1
+//                                                                               Pageable pageable,                               // 2
+//                                                                               ServerWebExchange exchange) {                    // 3
+//
+//        PairFlux<OrderDTO, ShipmentDTO> ordersWithShipment = PairFlux.of(orderService.getOrders(userId, pageable)               // 4
+//                .flatMap(order ->
+//                        shipmentService.getShipmentByOrderId(order.getId())
+//                                .map(shipment -> Pair.of(order, shipment))));
+//
+//        Mono<Long> totalElements = orderService.countAllOrders(userId);                                                         // 5
+//
+//        int pageSize = pageable.getPageSize();                                                                                  // 6
+//        long offset = pageable.getOffset();
+//        List<SortCriteria> sortCriteria = pageable.getSort().get()
+//                .map(o -> SortCriteria.by(o.getProperty(), o.getDirection().isAscending() ? ASCENDING : DESCENDING))
+//                .toList();
+//        return orderAssembler.wrapInListWrapper(ordersWithShipment, totalElements, pageSize, offset, sortCriteria, exchange);   // 7
+//    }
 }
