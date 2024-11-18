@@ -18,32 +18,37 @@ import org.springframework.web.server.ServerWebExchange;
 /**
  * @author Younes El Ouarti
  */
+//@formatter:off
 @Component
-public class OrderAssembler implements EmbeddingHalWrapperAssembler<OrderDTO, ShipmentDTO> {
-
+public class OrderAssembler implements EmbeddingHalWrapperAssembler<OrderDTO, ShipmentDTO> {                //1
 
     @Override
-    public Class<OrderDTO> getResourceTClass() {
-        return OrderDTO.class;
+    public Class<OrderDTO> getResourceTClass() {                                                            //2
+        return OrderDTO.class;                                                                              //3
     }
 
     @Override
-    public Link buildSelfLinkForResource(OrderDTO resourceToWrap, ServerWebExchange exchange) {
-        return Link.of("order/" + resourceToWrap.getId())
-                .prependBaseUrl(exchange);
+    public Class<ShipmentDTO> getEmbeddedTClass() {                                                         //4
+        return ShipmentDTO.class;
     }
 
     @Override
-    public Link buildSelfLinkForEmbedded(ShipmentDTO embedded, ServerWebExchange exchange) {
+    public Link buildSelfLinkForResource(OrderDTO resourceToWrap, ServerWebExchange exchange) {             //5
+        return Link.of("order/" + resourceToWrap.getId())                                                   //6
+                .prependBaseUrl(exchange);                                                                  //7
+    }
+
+    @Override
+    public Link buildSelfLinkForEmbedded(ShipmentDTO embedded, ServerWebExchange exchange) {                //8
         return Link.of("shipment/" + embedded.getId())
                 .prependBaseUrl(exchange)
                 .withHreflang("en-US");
     }
 
     @Override
-    public Link buildSelfLinkForResourceList(ServerWebExchange exchange) {
-        MultiValueMap<String, String> queryParams = exchange.getRequest().getQueryParams();
-        return Link.of("order{?userId,someDifferentFilter}")
+    public Link buildSelfLinkForResourceList(ServerWebExchange exchange) {                                  //9
+        MultiValueMap<String, String> queryParams = exchange.getRequest().getQueryParams();                 //10
+        return Link.of("order{?userId,someDifferentFilter}")                                               //11
                 .expand(queryParams)
                 .prependBaseUrl(exchange);
     }

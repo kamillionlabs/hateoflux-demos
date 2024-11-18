@@ -11,7 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.kamillionlabs.hateoflux.model.hal.HalListWrapper;
 import de.kamillionlabs.hateoflux.model.hal.HalResourceWrapper;
 import de.kamillionlabs.hateofluxdemos.assembler.OrderAssembler;
-import de.kamillionlabs.hateofluxdemos.controller.OrderController;
+import de.kamillionlabs.hateofluxdemos.controller.AssembledOrderController;
+import de.kamillionlabs.hateofluxdemos.controller.ManualOrderController;
 import de.kamillionlabs.hateofluxdemos.dto.OrderDTO;
 import de.kamillionlabs.hateofluxdemos.dto.ShipmentDTO;
 import de.kamillionlabs.hateofluxdemos.service.OrderService;
@@ -35,7 +36,11 @@ class CookbookExamplesTest {
 
     private final ShipmentService shipmentService = new ShipmentService();
 
-    private final OrderController orderController = new OrderController(orderAssembler, orderService, shipmentService);
+    private final ManualOrderController manualOrderController = new ManualOrderController(orderAssembler,
+            orderService, shipmentService);
+
+    private final AssembledOrderController assembledOrderController = new AssembledOrderController(orderAssembler,
+            orderService, shipmentService);
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -44,9 +49,9 @@ class CookbookExamplesTest {
     @Test
     public void creating_a_halresourcewrapper_without_an_embedded_resource() {
         //alternative: Run the application and on command line execute:
-        //curl "http://localhost:8080/order-no-embedded/1234"
+        //curl "http://localhost:8080/manual/order-no-embedded/1234"
 
-        HalResourceWrapper<OrderDTO, Void> order = orderController.getOrder(1234)
+        HalResourceWrapper<OrderDTO, Void> order = manualOrderController.getOrder(1234)
                 .block();
 
         String orderAsJson = objectMapper.writeValueAsString(order);
@@ -73,9 +78,9 @@ class CookbookExamplesTest {
     @Test
     public void creating_a_halresourcewrapper_with_an_embedded_resource() {
         //alternative: Run the application and on command line execute:
-        //curl "http://localhost:8080/order-with-embedded/1234"
+        //curl "http://localhost:8080/manual/order-with-embedded/1234"
 
-        HalResourceWrapper<OrderDTO, ShipmentDTO> order = orderController.getOrderWithShipment(1234)
+        HalResourceWrapper<OrderDTO, ShipmentDTO> order = manualOrderController.getOrderWithShipment(1234)
                 .block();
 
         String orderAsJson = objectMapper.writeValueAsString(order);
@@ -113,17 +118,17 @@ class CookbookExamplesTest {
     @Test
     public void creating_a_hallistwrapper_with_pagination() {
         //alternative: Run the application and on command line execute:
-        //curl "http://localhost:8080/orders-with-pagination-manual?userId=37&page=0&size=2&sort=id,desc"
+        //curl "http://localhost:8080/manual/orders-with-pagination?userId=37&page=0&size=2&sort=id,desc"
 
         Sort sort = Sort.by(Sort.Order.desc("id"));
         MockServerHttpRequest request = MockServerHttpRequest
                 .get("http://myservice:8080?userId=37&page=0&size=2&sort=id,desc")
                 .build();
         ServerWebExchange exchange = MockServerWebExchange.from(request);
-        HalListWrapper<OrderDTO, Void> orders = orderController.getOrdersManualBuilt(
-                37L, 
-                PageRequest.of(0, 2, sort), 
-                exchange)
+        HalListWrapper<OrderDTO, Void> orders = manualOrderController.getOrdersManualBuilt(
+                        37L,
+                        PageRequest.of(0, 2, sort),
+                        exchange)
                 .block();
 
         String ordersAsJson = objectMapper.writeValueAsString(orders);
@@ -178,20 +183,18 @@ class CookbookExamplesTest {
     }
 
 
-
-
     @SneakyThrows
     @Test
-    public void using_an_assembler_to_create_a_hallistwrapper_with_embedded_resources() {
+    public void using_an_assembler_to_create_a_hallistwrapper_for_resources_with_an_embedded_resource() {
         //alternative: Run the application and on command line execute:
-        //curl "http://localhost:8080/orders-using-assembler?userId=37&page=0&size=2&sort=id,asc"
+        //curl "http://localhost:8080/assembled/orders-using-assembler?userId=37&page=0&size=2&sort=id,asc"
 
         Sort sort = Sort.by(Sort.Order.asc("id"));
         MockServerHttpRequest request = MockServerHttpRequest
                 .get("http://myservice:8080?userId=37&page=0&size=2&sort=id,desc")
                 .build();
         ServerWebExchange exchange = MockServerWebExchange.from(request);
-        HalListWrapper<OrderDTO, ShipmentDTO> orders = orderController.getOrdersUsingAssembler(
+        HalListWrapper<OrderDTO, ShipmentDTO> orders = assembledOrderController.getOrdersUsingAssembler(
                         37L,
                         PageRequest.of(0, 2, sort),
                         exchange)
