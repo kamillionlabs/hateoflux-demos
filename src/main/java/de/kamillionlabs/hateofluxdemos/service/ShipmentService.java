@@ -18,7 +18,7 @@
 
 package de.kamillionlabs.hateofluxdemos.service;
 
-import de.kamillionlabs.hateoflux.utility.PairList;
+import de.kamillionlabs.hateoflux.utility.pair.PairList;
 import de.kamillionlabs.hateofluxdemos.dto.ShipmentDTO;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
