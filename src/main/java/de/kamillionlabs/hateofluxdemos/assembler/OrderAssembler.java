@@ -29,7 +29,7 @@ public class OrderAssembler implements EmbeddingHalWrapperAssembler<OrderDTO, Sh
 
     @Override
     public Class<ShipmentDTO> getEmbeddedTClass() {                                                         //4
-        return null;
+        return ShipmentDTO.class;
     }
 
     @Override

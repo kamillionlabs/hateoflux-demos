@@ -124,27 +124,4 @@ public class ManualOrderController {
                         }
                 );
     }
-
-//    /**
-//     * Cookbook example: Using an Assembler to Create a HalListWrapper For Resources With an Embedded Resource
-//     */
-//    @GetMapping("/orders-using-assembler")
-//    public Mono<HalListWrapper<OrderDTO, ShipmentDTO>> getOrdersUsingAssembler(@RequestParam(required = false) Long userId,     // 1
-//                                                                               Pageable pageable,                               // 2
-//                                                                               ServerWebExchange exchange) {                    // 3
-//
-//        PairFlux<OrderDTO, ShipmentDTO> ordersWithShipment = PairFlux.of(orderService.getOrders(userId, pageable)               // 4
-//                .flatMap(order ->
-//                        shipmentService.getShipmentByOrderId(order.getId())
-//                                .map(shipment -> Pair.of(order, shipment))));
-//
-//        Mono<Long> totalElements = orderService.countAllOrders(userId);                                                         // 5
-//
-//        int pageSize = pageable.getPageSize();                                                                                  // 6
-//        long offset = pageable.getOffset();
-//        List<SortCriteria> sortCriteria = pageable.getSort().get()
-//                .map(o -> SortCriteria.by(o.getProperty(), o.getDirection().isAscending() ? ASCENDING : DESCENDING))
-//                .toList();
-//        return orderAssembler.wrapInListWrapper(ordersWithShipment, totalElements, pageSize, offset, sortCriteria, exchange);   // 7
-//    }
 }
