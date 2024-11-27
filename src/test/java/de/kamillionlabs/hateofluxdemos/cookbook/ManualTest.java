@@ -5,13 +5,12 @@
  *
  * @since 11.11.2024
  */
-package de.kamillionlabs.hateofluxdemos;
+package de.kamillionlabs.hateofluxdemos.cookbook;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.kamillionlabs.hateoflux.model.hal.HalListWrapper;
 import de.kamillionlabs.hateoflux.model.hal.HalResourceWrapper;
 import de.kamillionlabs.hateofluxdemos.assembler.OrderAssembler;
-import de.kamillionlabs.hateofluxdemos.controller.AssembledOrderController;
 import de.kamillionlabs.hateofluxdemos.controller.ManualOrderController;
 import de.kamillionlabs.hateofluxdemos.dto.OrderDTO;
 import de.kamillionlabs.hateofluxdemos.dto.ShipmentDTO;
@@ -28,7 +27,7 @@ import org.springframework.web.server.ServerWebExchange;
 
 import static org.skyscreamer.jsonassert.JSONCompareMode.NON_EXTENSIBLE;
 
-class CookbookExamplesTest {
+class ManualTest {
 
     private final OrderAssembler orderAssembler = new OrderAssembler();
 
@@ -39,15 +38,12 @@ class CookbookExamplesTest {
     private final ManualOrderController manualOrderController = new ManualOrderController(orderAssembler,
             orderService, shipmentService);
 
-    private final AssembledOrderController assembledOrderController = new AssembledOrderController(orderAssembler,
-            orderService, shipmentService);
-
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 
     @SneakyThrows
     @Test
-    public void creating_a_halresourcewrapper_without_an_embedded_resource() {
+    void creating_a_halresourcewrapper_without_an_embedded_resource() {
         //alternative: Run the application and on command line execute:
         //curl "http://localhost:8080/manual/order-no-embedded/1234"
 
@@ -76,7 +72,7 @@ class CookbookExamplesTest {
 
     @SneakyThrows
     @Test
-    public void creating_a_halresourcewrapper_with_an_embedded_resource() {
+    void creating_a_halresourcewrapper_with_an_embedded_resource() {
         //alternative: Run the application and on command line execute:
         //curl "http://localhost:8080/manual/order-with-embedded/1234"
 
@@ -116,7 +112,7 @@ class CookbookExamplesTest {
 
     @SneakyThrows
     @Test
-    public void creating_a_hallistwrapper_with_pagination() {
+    void creating_a_hallistwrapper_with_pagination() {
         //alternative: Run the application and on command line execute:
         //curl "http://localhost:8080/manual/orders-with-pagination?userId=37&page=0&size=2&sort=id,desc"
 
@@ -181,103 +177,4 @@ class CookbookExamplesTest {
                   }
                 """, ordersAsJson, NON_EXTENSIBLE);
     }
-
-
-    @SneakyThrows
-    @Test
-    public void using_an_assembler_to_create_a_hallistwrapper_for_resources_with_an_embedded_resource() {
-        //alternative: Run the application and on command line execute:
-        //curl "http://localhost:8080/assembled/orders-using-assembler?userId=37&page=0&size=2&sort=id,asc"
-
-        Sort sort = Sort.by(Sort.Order.asc("id"));
-        MockServerHttpRequest request = MockServerHttpRequest
-                .get("http://myservice:8080?userId=37&page=0&size=2&sort=id,desc")
-                .build();
-        ServerWebExchange exchange = MockServerWebExchange.from(request);
-        HalListWrapper<OrderDTO, ShipmentDTO> orders = assembledOrderController.getOrdersUsingAssembler(
-                        37L,
-                        PageRequest.of(0, 2, sort),
-                        exchange)
-                .block();
-
-        String ordersAsJson = objectMapper.writeValueAsString(orders);
-
-        JSONAssert.assertEquals("""
-                {
-                     "page": {
-                       "size": 2,
-                       "totalElements": 6,
-                       "totalPages": 3,
-                       "number": 0
-                     },
-                     "_embedded": {
-                       "orderDTOs": [
-                         {
-                           "id": 1234,
-                           "userId": 37,
-                           "total": 99.99,
-                           "status": "Processing",
-                           "_embedded": {
-                             "shipment": {
-                               "id": 127,
-                               "carrier": "UPS",
-                               "trackingNumber": "154-ASD-1238724",
-                               "status": "Completed",
-                               "_links": {
-                                 "self": {
-                                   "href": "http://myservice:8080/shipment/127",
-                                   "hreflang": "en-US"
-                                 }
-                               }
-                             }
-                           },
-                           "_links": {
-                             "self": {
-                               "href": "http://myservice:8080/order/1234"
-                             }
-                           }
-                         },
-                         {
-                           "id": 1057,
-                           "userId": 37,
-                           "total": 72.48,
-                           "status": "Delivered",
-                           "_embedded": {
-                             "shipment": {
-                               "id": 105,
-                               "carrier": "UPS",
-                               "trackingNumber": "154-ASD-1284724",
-                               "status": "Completed",
-                               "_links": {
-                                 "self": {
-                                   "href": "http://myservice:8080/shipment/105",
-                                   "hreflang": "en-US"
-                                 }
-                               }
-                             }
-                           },
-                           "_links": {
-                             "self": {
-                               "href": "http://myservice:8080/order/1057"
-                             }
-                           }
-                         }
-                       ]
-                     },
-                     "_links": {
-                       "next": {
-                         "href": "http://myservice:8080/order?userId=37?page=1&size=2&sort=id,asc"
-                       },
-                       "self": {
-                         "href": "http://myservice:8080/order?userId=37?page=0&size=2&sort=id,asc"
-                       },
-                       "last": {
-                         "href": "http://myservice:8080/order?userId=37?page=2&size=2&sort=id,asc"
-                       }
-                     }
-                   }
-                """, ordersAsJson, NON_EXTENSIBLE);
-    }
-
-
 }

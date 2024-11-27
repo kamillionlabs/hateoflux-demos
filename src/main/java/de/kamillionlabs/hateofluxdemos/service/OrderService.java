@@ -41,8 +41,8 @@ public class OrderService {
                 new OrderDTO(9510, 37L, 199.99, "Returned"),
                 new OrderDTO(7258, 37L, 34.00, "Delivered"),
                 new OrderDTO(9550, 38L, 149.99, "Delivered"),
-                new OrderDTO(7250, 39L, 34.00, "Delivered"),
-                new OrderDTO(1230, 91L, 99.99, "Processing"),
+                new OrderDTO(7250, 39L, 34.00, "Created"),
+                new OrderDTO(1230, 39L, 99.99, "Delivered"),
                 new OrderDTO(1040, 37L, 72.48, "Delivered"),
                 new OrderDTO(9540, 87L, 199.99, "Returned"),
                 new OrderDTO(7208, 87L, 34.00, "Delivered"),
@@ -51,7 +51,7 @@ public class OrderService {
                 new OrderDTO(5204, 87L, 99.99, "Processing"),
                 new OrderDTO(5007, 37L, 10.00, "Delivered"),
                 new OrderDTO(1070, 17L, 199.99, "Returned"),
-                new OrderDTO(5078, 17L, 34.00, "Delivered"),
+                new OrderDTO(5078, 17L, 34.00, "Returned"),
                 new OrderDTO(5058, 38L, 149.99, "Delivered"),
                 new OrderDTO(7058, 98L, 34.00, "Delivered")
         );
@@ -75,7 +75,7 @@ public class OrderService {
     }
 
     public Flux<OrderDTO> getOrders(Long userId, Pageable pageable) {
-        //for simplicity we ignore the sorting
+        //for simplicity, we ignore the sorting
         int pageSize = pageable.getPageSize();
         return userId == null ? Flux.fromStream(database.stream().limit(pageSize))
                 : getOrdersByUserId(userId).take(pageSize);

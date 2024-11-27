@@ -99,7 +99,7 @@ public class OrderItemService {
      *         The ID of the order.
      * @return A Flux emitting the OrderItemDTOs for the specified order.
      */
-    public Flux<OrderItemDTO> getOrderItems(int orderId) {
+    public Flux<OrderItemDTO> getOrderItemsByOrderId(int orderId) {
         return Flux.fromStream(
                 database.stream()
                         .filter(item -> item.getOrderId() == orderId)
