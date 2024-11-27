@@ -74,7 +74,7 @@ public class ManualOrderController {
     @GetMapping("/order-with-embedded/{orderId}")
     public Mono<HalResourceWrapper<OrderDTO, ShipmentDTO>> getOrderWithShipment(@PathVariable int orderId) {             //  1
         Mono<OrderDTO> orderMono = orderService.getOrder(orderId);                                                       //  2
-        Mono<ShipmentDTO> shipmentMono = shipmentService.getShipmentByOrderId(orderId);                                  //  3
+        Mono<ShipmentDTO> shipmentMono = shipmentService.getLastShipmentByOrderId(orderId);                                  //  3
         return orderMono.zipWith(shipmentMono, (order, shipment) ->
                 HalResourceWrapper.wrap(order)                                                                           //  4
                         .withLinks(                                                                                      //  5

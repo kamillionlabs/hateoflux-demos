@@ -35,7 +35,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.data:spring-data-commons'
-    implementation 'de.kamillionlabs:hateoflux:0.20.0-SNAPSHOT-0'
+    implementation 'de.kamillionlabs:hateoflux:0.21.0-SNAPSHOT-1'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 

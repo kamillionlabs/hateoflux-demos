@@ -53,14 +53,15 @@ public class AssembledOrderController {
     /**
      * Cookbook example: Create a HalListWrapper For Resources With an Embedded Resource
      */
-    @GetMapping("/orders-using-assembler")
-    public Mono<HalListWrapper<OrderDTO, ShipmentDTO>> getOrdersUsingAssembler(@RequestParam(required = false) Long userId,     // 1
+    @GetMapping("/orders-with-single-embedded-and-pagination")
+    public Mono<HalListWrapper<OrderDTO, ShipmentDTO>> getOrdersWithShipmentAndPagination(
+                                                                               @RequestParam(required = false) Long userId,     // 1
                                                                                Pageable pageable,                               // 2
                                                                                ServerWebExchange exchange) {                    // 3
 
         PairFlux<OrderDTO, ShipmentDTO> ordersWithShipment = PairFlux.of(orderService.getOrders(userId, pageable)               // 4
                 .flatMap(order ->
-                        shipmentService.getShipmentByOrderId(order.getId())
+                        shipmentService.getShipmentsByOrderId(order.getId())
                                 .map(shipment -> Pair.of(order, shipment))));
 
         Mono<Long> totalElements = orderService.countAllOrders(userId);                                                         // 5
