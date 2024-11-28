@@ -20,7 +20,7 @@ package de.kamillionlabs.hateofluxdemos.service;
 
 import de.kamillionlabs.hateoflux.utility.pair.Pair;
 import de.kamillionlabs.hateoflux.utility.pair.PairList;
-import de.kamillionlabs.hateofluxdemos.dto.ShipmentDTO;
+import de.kamillionlabs.hateofluxdemos.datatransferobject.ShipmentDTO;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

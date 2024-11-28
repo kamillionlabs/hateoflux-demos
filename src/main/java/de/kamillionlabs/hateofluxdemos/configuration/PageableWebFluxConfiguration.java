@@ -8,6 +8,7 @@
 package de.kamillionlabs.hateofluxdemos.configuration;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.ReactivePageableHandlerMethodArgumentResolver;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
@@ -15,6 +16,12 @@ import org.springframework.web.reactive.result.method.annotation.ArgumentResolve
 @Configuration
 public class PageableWebFluxConfiguration implements WebFluxConfigurer {
 
+    /**
+     * This is needed, so that Spring is able to inject {@link Pageable}s into a controller class.
+     *
+     * @param configurer
+     *         to configurer to use
+     */
     @Override
     public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
         configurer.addCustomResolver(new ReactivePageableHandlerMethodArgumentResolver());

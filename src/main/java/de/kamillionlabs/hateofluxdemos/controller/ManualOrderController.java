@@ -14,9 +14,8 @@ import de.kamillionlabs.hateoflux.model.hal.HalResourceWrapper;
 import de.kamillionlabs.hateoflux.model.link.IanaRelation;
 import de.kamillionlabs.hateoflux.model.link.Link;
 import de.kamillionlabs.hateoflux.utility.SortCriteria;
-import de.kamillionlabs.hateofluxdemos.assembler.OrderAssembler;
-import de.kamillionlabs.hateofluxdemos.dto.OrderDTO;
-import de.kamillionlabs.hateofluxdemos.dto.ShipmentDTO;
+import de.kamillionlabs.hateofluxdemos.datatransferobject.OrderDTO;
+import de.kamillionlabs.hateofluxdemos.datatransferobject.ShipmentDTO;
 import de.kamillionlabs.hateofluxdemos.service.OrderService;
 import de.kamillionlabs.hateofluxdemos.service.ShipmentService;
 import lombok.AllArgsConstructor;
@@ -41,9 +40,6 @@ import static de.kamillionlabs.hateoflux.utility.SortDirection.DESCENDING;
 @RequestMapping("/manual")
 @AllArgsConstructor
 public class ManualOrderController {
-
-    @Autowired
-    private OrderAssembler orderAssembler;
 
     @Autowired
     private OrderService orderService;

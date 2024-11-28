@@ -10,10 +10,9 @@ package de.kamillionlabs.hateofluxdemos.cookbook;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.kamillionlabs.hateoflux.model.hal.HalListWrapper;
 import de.kamillionlabs.hateoflux.model.hal.HalResourceWrapper;
-import de.kamillionlabs.hateofluxdemos.assembler.OrderAssembler;
 import de.kamillionlabs.hateofluxdemos.controller.ManualOrderController;
-import de.kamillionlabs.hateofluxdemos.dto.OrderDTO;
-import de.kamillionlabs.hateofluxdemos.dto.ShipmentDTO;
+import de.kamillionlabs.hateofluxdemos.datatransferobject.OrderDTO;
+import de.kamillionlabs.hateofluxdemos.datatransferobject.ShipmentDTO;
 import de.kamillionlabs.hateofluxdemos.service.OrderService;
 import de.kamillionlabs.hateofluxdemos.service.ShipmentService;
 import lombok.SneakyThrows;
@@ -27,16 +26,19 @@ import org.springframework.web.server.ServerWebExchange;
 
 import static org.skyscreamer.jsonassert.JSONCompareMode.NON_EXTENSIBLE;
 
-class ManualTest {
-
-    private final OrderAssembler orderAssembler = new OrderAssembler();
+/**
+ * Contains test cases from the documentation. These can be used to debug a given example.
+ *
+ * @author Younes El Ouarti
+ */
+class ManualOrderControllerTest {
 
     private final OrderService orderService = new OrderService();
 
     private final ShipmentService shipmentService = new ShipmentService();
 
-    private final ManualOrderController manualOrderController = new ManualOrderController(orderAssembler,
-            orderService, shipmentService);
+    private final ManualOrderController manualOrderController = new ManualOrderController(orderService,
+            shipmentService);
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 

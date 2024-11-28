@@ -8,8 +8,9 @@
 
 package de.kamillionlabs.hateofluxdemos.controller;
 
+import de.kamillionlabs.hateoflux.linkbuilder.SpringControllerLinkBuilder;
 import de.kamillionlabs.hateoflux.model.hal.HalResourceWrapper;
-import de.kamillionlabs.hateofluxdemos.dto.ShipmentDTO;
+import de.kamillionlabs.hateofluxdemos.datatransferobject.ShipmentDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 /**
+ * Controller only defined to show how {@link SpringControllerLinkBuilder} can construct links.
+ *
  * @author Younes El Ouarti
  */
 @RestController

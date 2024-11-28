@@ -9,8 +9,8 @@ package de.kamillionlabs.hateofluxdemos.assembler;
 
 import de.kamillionlabs.hateoflux.assembler.EmbeddingHalWrapperAssembler;
 import de.kamillionlabs.hateoflux.model.link.Link;
-import de.kamillionlabs.hateofluxdemos.dto.OrderDTO;
-import de.kamillionlabs.hateofluxdemos.dto.ShipmentDTO;
+import de.kamillionlabs.hateofluxdemos.datatransferobject.OrderDTO;
+import de.kamillionlabs.hateofluxdemos.datatransferobject.ShipmentDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;

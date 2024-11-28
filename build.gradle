@@ -5,9 +5,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.6'
 }
 
-group = 'de.kamillionlabs'
-version = '0.0.1-SNAPSHOT'
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
@@ -34,14 +31,13 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    // Spring data is not required. It is just used for some examples with Pageable
     implementation 'org.springframework.data:spring-data-commons'
-    implementation 'de.kamillionlabs:hateoflux:0.21.0-SNAPSHOT-1'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-
-    implementation 'org.springframework.hateoas:spring-hateoas'
-
+    implementation 'de.kamillionlabs:hateoflux:0.21.0-SNAPSHOT-1'
 
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
