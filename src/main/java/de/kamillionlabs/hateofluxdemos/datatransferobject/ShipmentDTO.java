@@ -6,7 +6,7 @@
  * @since 11.11.2024
  */
 
-package de.kamillionlabs.hateofluxdemos.dto;
+package de.kamillionlabs.hateofluxdemos.datatransferobject;
 
 import de.kamillionlabs.hateoflux.model.hal.Relation;
 import lombok.AllArgsConstructor;

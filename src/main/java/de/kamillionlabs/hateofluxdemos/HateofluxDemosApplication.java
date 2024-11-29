@@ -13,6 +13,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class HateofluxDemosApplication {
 
+    /**
+     * Run this to start the service.
+     *
+     * @param args
+     *         n/a
+     */
     public static void main(String[] args) {
         SpringApplication.run(HateofluxDemosApplication.class, args);
     }

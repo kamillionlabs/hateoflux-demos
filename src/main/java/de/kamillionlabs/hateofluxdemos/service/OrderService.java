@@ -18,7 +18,7 @@
 
 package de.kamillionlabs.hateofluxdemos.service;
 
-import de.kamillionlabs.hateofluxdemos.dto.OrderDTO;
+import de.kamillionlabs.hateofluxdemos.datatransferobject.OrderDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;

@@ -6,19 +6,18 @@
  * @since 11.11.2024
  */
 
-package de.kamillionlabs.hateofluxdemos.dto;
+package de.kamillionlabs.hateofluxdemos.datatransferobject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-/**
- * @author Younes El Ouarti
- */
 @Data
 @AllArgsConstructor
-public class OrderItemDTO {
-    private int id;
-    private int orderId;
-    private String name;
-    private double price;
+public class OrderDTO {
+    int id;
+    long userId;
+    double total;
+    String status;
 }
+
+

@@ -9,11 +9,10 @@ package de.kamillionlabs.hateofluxdemos.controller;
 
 import de.kamillionlabs.hateoflux.model.hal.HalListWrapper;
 import de.kamillionlabs.hateoflux.utility.SortCriteria;
-import de.kamillionlabs.hateoflux.utility.pair.Pair;
 import de.kamillionlabs.hateoflux.utility.pair.PairFlux;
 import de.kamillionlabs.hateofluxdemos.assembler.OrderAssembler;
-import de.kamillionlabs.hateofluxdemos.dto.OrderDTO;
-import de.kamillionlabs.hateofluxdemos.dto.ShipmentDTO;
+import de.kamillionlabs.hateofluxdemos.datatransferobject.OrderDTO;
+import de.kamillionlabs.hateofluxdemos.datatransferobject.ShipmentDTO;
 import de.kamillionlabs.hateofluxdemos.service.OrderService;
 import de.kamillionlabs.hateofluxdemos.service.ShipmentService;
 import lombok.AllArgsConstructor;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public class AssembledOrderController {
 
 
     /**
-     * Cookbook example: Create a HalListWrapper For Resources With an Embedded Resource
+     * Cookbook example: Using an Assembler to Create a `HalListWrapper` For Resources With an Embedded Resource
      */
     @GetMapping("/orders-with-single-embedded-and-pagination")
     public Mono<HalListWrapper<OrderDTO, ShipmentDTO>> getOrdersWithShipmentAndPagination(
@@ -59,10 +59,9 @@ public class AssembledOrderController {
                                                                                Pageable pageable,                               // 2
                                                                                ServerWebExchange exchange) {                    // 3
 
-        PairFlux<OrderDTO, ShipmentDTO> ordersWithShipment = PairFlux.of(orderService.getOrders(userId, pageable)               // 4
-                .flatMap(order ->
-                        shipmentService.getShipmentsByOrderId(order.getId())
-                                .map(shipment -> Pair.of(order, shipment))));
+        Flux<OrderDTO> orders = orderService.getOrders(userId, pageable);
+        PairFlux<OrderDTO, ShipmentDTO> ordersWithShipment =
+                PairFlux.zipWith(orders, (order -> shipmentService.getLastShipmentByOrderId(order.getId())));                   // 4
 
         Mono<Long> totalElements = orderService.countAllOrders(userId);                                                         // 5
 
