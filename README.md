@@ -82,7 +82,7 @@ curl -X GET "http://localhost:8080/manual/order-no-embedded/1234"
   }
 }
 ```
-_Feel free to explore other endpoints as defined in the controllers._
+_Feel free to explore other endpoints as defined in the controllers. Unit tests are also a great way to get to know how things work._
 
 ## Examples from the Documentation Cookbook
 
