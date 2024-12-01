@@ -20,7 +20,7 @@
 
  
 ## Prerequisites
-* Java 21+
+* Java 17+
 * Gradle 8.5+
 
 ## Installation
