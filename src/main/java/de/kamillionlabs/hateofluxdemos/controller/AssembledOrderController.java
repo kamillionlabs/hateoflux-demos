@@ -33,7 +33,7 @@ import static de.kamillionlabs.hateoflux.utility.SortDirection.DESCENDING;
 
 //@formatter:off
 /**
- * @author Younes
+ * @author Younes El Ouarti
  */
 @RestController
 @RequestMapping("/assembled")

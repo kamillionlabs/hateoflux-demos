@@ -37,7 +37,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation 'de.kamillionlabs:hateoflux:1.0.0'
+    implementation 'de.kamillionlabs:hateoflux:1.1.0'
 
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
